@@ -10,7 +10,24 @@ namespace crypto.Services.Encryptations
 
         public async Task<StringEncriptada> Desencriptar(StringEncriptada objeto)
         {
-            throw new NotImplementedException();
+            StringEncriptada retorno = new StringEncriptada();
+            string textoDesencriptado = string.Empty;
+            Aes aesDesencriptado = Aes.Create();
+
+            byte[] conteudoEncriptado = Convert.FromBase64String(objeto.textoEncriptado);
+            aesDesencriptado.Key = Convert.FromBase64String(objeto.chaveDeCriptografia);
+            aesDesencriptado.IV = Convert.FromBase64String(objeto.vetorDeInicializacao);
+
+            ICryptoTransform cryptoTransform = aesDesencriptado.CreateDecryptor(aesDesencriptado.Key, aesDesencriptado.IV);
+
+            MemoryStream memoryStreamDecrypt = new MemoryStream();
+            CryptoStream cryptoStream = new CryptoStream(memoryStreamDecrypt, cryptoTransform, CryptoStreamMode.Read);
+            StreamReader reader = new StreamReader(cryptoStream);
+
+            textoDesencriptado = await reader.ReadToEndAsync() ?? throw new InvalidOperationException("Erro ao desencriptografar o texto");
+            retorno.textoDesencriptado = textoDesencriptado;
+
+            return retorno;
         }
 
         public async Task<StringEncriptada> Encriptar(string input)
