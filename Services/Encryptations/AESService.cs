@@ -18,11 +18,11 @@ namespace crypto.Services.Encryptations
             aesDesencriptado.Key = Convert.FromBase64String(objeto.chaveDeCriptografia);
             aesDesencriptado.IV = Convert.FromBase64String(objeto.vetorDeInicializacao);
 
-            ICryptoTransform cryptoTransform = aesDesencriptado.CreateDecryptor(aesDesencriptado.Key, aesDesencriptado.IV);
+            using ICryptoTransform cryptoTransform = aesDesencriptado.CreateDecryptor(aesDesencriptado.Key, aesDesencriptado.IV);
 
-            MemoryStream memoryStreamDecrypt = new MemoryStream();
-            CryptoStream cryptoStream = new CryptoStream(memoryStreamDecrypt, cryptoTransform, CryptoStreamMode.Read);
-            StreamReader reader = new StreamReader(cryptoStream);
+            using MemoryStream memoryStreamDecrypt = new MemoryStream(conteudoEncriptado);
+            using CryptoStream cryptoStream = new CryptoStream(memoryStreamDecrypt, cryptoTransform, CryptoStreamMode.Read);
+            using StreamReader reader = new StreamReader(cryptoStream);
 
             textoDesencriptado = await reader.ReadToEndAsync() ?? throw new InvalidOperationException("Erro ao desencriptografar o texto");
             retorno.textoDesencriptado = textoDesencriptado;
@@ -41,11 +41,11 @@ namespace crypto.Services.Encryptations
             aesEncriptacao.Key = _aesChave.Key;
             aesEncriptacao.IV = _aesChave.IV;
 
-            ICryptoTransform cryptoTransform = aesEncriptacao.CreateEncryptor(aesEncriptacao.Key, aesEncriptacao.IV);
+            using ICryptoTransform cryptoTransform = aesEncriptacao.CreateEncryptor(aesEncriptacao.Key, aesEncriptacao.IV);
 
-            MemoryStream memoryStreamEncrypt = new MemoryStream();
-            CryptoStream cryptoStream = new CryptoStream(memoryStreamEncrypt, cryptoTransform, CryptoStreamMode.Write);
-            StreamWriter streamWriter = new StreamWriter(cryptoStream);
+            using MemoryStream memoryStreamEncrypt = new MemoryStream();
+            using CryptoStream cryptoStream = new CryptoStream(memoryStreamEncrypt, cryptoTransform, CryptoStreamMode.Write);
+            using StreamWriter streamWriter = new StreamWriter(cryptoStream);
 
             await streamWriter.WriteAsync(input);
             await streamWriter.FlushAsync();

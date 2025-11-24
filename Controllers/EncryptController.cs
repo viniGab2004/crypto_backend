@@ -33,5 +33,24 @@ namespace crypto.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost]
+        [Route("desencriptar-AES")]
+        public async Task<IActionResult> DesencriptarAES([FromBody] StringEncriptada objeto) 
+        {
+            try
+            {
+                StringEncriptada objetoDesencriptado = await _services.DesencriptarAES(objeto);
+                return Ok(objetoDesencriptado);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

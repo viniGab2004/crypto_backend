@@ -1,3 +1,4 @@
+using crypto.Handler;
 using crypto.Services;
 using crypto.Services.Encryptations;
 
@@ -10,6 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<EncryptServices>();
+builder.Services.AddScoped<EncryptHandler>();
 builder.Services.AddTransient<AESService>();
 
 var app = builder.Build();
