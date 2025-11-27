@@ -1,6 +1,6 @@
+using crypto.Encryptations;
 using crypto.Handler;
 using crypto.Services;
-using crypto.Services.Encryptations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +13,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<EncryptServices>();
 builder.Services.AddScoped<EncryptHandler>();
 builder.Services.AddTransient<AESService>();
+builder.Services.AddTransient<DESService>();
 
 var app = builder.Build();
 

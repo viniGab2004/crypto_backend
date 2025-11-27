@@ -2,7 +2,7 @@
 using crypto.Models;
 using System.Security.Cryptography;
 
-namespace crypto.Services.Encryptations
+namespace crypto.Encryptations
 {
     public class AESService : IEncryptMethods
     {

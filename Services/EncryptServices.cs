@@ -1,18 +1,20 @@
-﻿using crypto.Handler;
+﻿using crypto.Encryptations;
+using crypto.Handler;
 using crypto.Interface;
 using crypto.Models;
-using crypto.Services.Encryptations;
 
 namespace crypto.Services
 {
     public class EncryptServices : IEncryptService
     {
         private AESService _serviceAES;
+        private DESService _trpleDESService;
         private EncryptHandler _encryptHandler;
 
-        public EncryptServices(AESService serviceAES, EncryptHandler encryptHandler) 
+        public EncryptServices(AESService serviceAES, EncryptHandler encryptHandler, DESService DESService) 
         {
             _serviceAES = serviceAES;
+            _trpleDESService = DESService;
             _encryptHandler = encryptHandler;
         }
 
@@ -91,8 +93,7 @@ namespace crypto.Services
         public async Task<StringEncriptada> EncriptarAES(string texto)
         {
             _encryptHandler.possuiTextoDesencriptado(texto);
-            StringEncriptada response = await _serviceAES.Encriptar(texto);
-            return response;
+            return await _serviceAES.Encriptar(texto);     
         }
 
         public Task<StringEncriptada> EncriptarAesGcm(string texto)
@@ -120,9 +121,10 @@ namespace crypto.Services
             throw new NotImplementedException();
         }
 
-        public Task<StringEncriptada> EncriptarTripleDES(string texto)
+        public async Task<StringEncriptada> EncriptarTripleDES(string texto)
         {
-            throw new NotImplementedException();
+            _encryptHandler.possuiTextoDesencriptado(texto);
+            return await _trpleDESService.Encriptar(texto);
         }
         #endregion
 
