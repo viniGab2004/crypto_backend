@@ -8,8 +8,6 @@ namespace crypto.Interface
         Task<StringEncriptada> DesencriptarAES(StringEncriptada stringEncriptada);
         Task<StringEncriptada> EncriptarRSA(string texto);
         Task<StringEncriptada> DesencriptarRSA(StringEncriptada stringEncriptada);
-        Task<StringEncriptada> EncriptarDES(string texto);
-        Task<StringEncriptada> DesencriptarDES(StringEncriptada stringEncriptada);
         Task<StringEncriptada> EncriptarTripleDES(string texto);
         Task<StringEncriptada> DesencriptarTripleDES(StringEncriptada stringEncriptada);
         Task<StringEncriptada> EncriptarRC2(string texto);

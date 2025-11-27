@@ -71,5 +71,24 @@ namespace crypto.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost]
+        [Route("desencripta-TripleDES")]
+        public async Task<IActionResult> DesencriptarTripleDES([FromBody] StringEncriptada objeto) 
+        {
+            try
+            {
+                StringEncriptada objetoDesencriptado = await _services.DesencriptarTripleDES(objeto);
+                return Ok(objetoDesencriptado);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

@@ -24,31 +24,10 @@ namespace crypto.Services
             _encryptHandler.possuiTextoEncriptado(stringEncriptada.textoEncriptado);
             _encryptHandler.possuiChaveDeCriptografia(stringEncriptada.chaveDeCriptografia);
             _encryptHandler.possuiVetorDeInicializacao(stringEncriptada.vetorDeInicializacao);
-            StringEncriptada response = await _serviceAES.Desencriptar(stringEncriptada);
-            return response;
-        }
-
-        public Task<StringEncriptada> DesencriptarAesGcm(string texto)
-        {
-            throw new NotImplementedException();
+            return await _serviceAES.Desencriptar(stringEncriptada);
         }
 
         public Task<StringEncriptada> DesencriptarAesGcm(StringEncriptada stringEncriptada)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<StringEncriptada> DesencriptarDES(string texto)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<StringEncriptada> DesencriptarDES(StringEncriptada stringEncriptada)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<StringEncriptada> DesencriptarRC2(string texto)
         {
             throw new NotImplementedException();
         }
@@ -58,17 +37,7 @@ namespace crypto.Services
             throw new NotImplementedException();
         }
 
-        public Task<StringEncriptada> DesencriptarRC4(string texto)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<StringEncriptada> DesencriptarRC4(StringEncriptada stringEncriptada)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<StringEncriptada> DesencriptarRSA(string texto)
         {
             throw new NotImplementedException();
         }
@@ -78,14 +47,12 @@ namespace crypto.Services
             throw new NotImplementedException();
         }
 
-        public Task<StringEncriptada> DesencriptarTripleDES(string texto)
+        public async Task<StringEncriptada> DesencriptarTripleDES(StringEncriptada stringEncriptada)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<StringEncriptada> DesencriptarTripleDES(StringEncriptada stringEncriptada)
-        {
-            throw new NotImplementedException();
+            _encryptHandler.possuiTextoEncriptado(stringEncriptada.textoEncriptado);
+            _encryptHandler.possuiChaveDeCriptografia(stringEncriptada.chaveDeCriptografia);
+            _encryptHandler.possuiVetorDeInicializacao(stringEncriptada.vetorDeInicializacao);
+            return await _trpleDESService.Desencriptar(stringEncriptada);
         }
         #endregion
 
@@ -98,12 +65,8 @@ namespace crypto.Services
 
         public Task<StringEncriptada> EncriptarAesGcm(string texto)
         {
-            throw new NotImplementedException();
-        }
+            _encryptHandler.possuiTextoDesencriptado(texto);
 
-        public Task<StringEncriptada> EncriptarDES(string texto)
-        {
-            throw new NotImplementedException();
         }
 
         public Task<StringEncriptada> EncriptarRC2(string texto)

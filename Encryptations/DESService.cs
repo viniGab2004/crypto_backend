@@ -8,9 +8,26 @@ namespace crypto.Encryptations
     {
         private TripleDES _chaveTripleDES = TripleDES.Create();
 
-        public Task<StringEncriptada> Desencriptar(StringEncriptada objeto)
+        public async Task<StringEncriptada> Desencriptar(StringEncriptada objeto)
         {
-            throw new NotImplementedException();
+            StringEncriptada retorno = new StringEncriptada();
+            string textoDesencriptado = string.Empty;
+            TripleDES tripleDesDesencriptado = TripleDES.Create();
+
+            byte[] conteudoEncriptado = Convert.FromBase64String(objeto.textoEncriptado);
+            tripleDesDesencriptado.IV = Convert.FromBase64String(objeto.vetorDeInicializacao);
+            tripleDesDesencriptado.Key = Convert.FromBase64String(objeto.chaveDeCriptografia);
+
+            using ICryptoTransform cryptoTransform = tripleDesDesencriptado.CreateDecryptor(tripleDesDesencriptado.Key, tripleDesDesencriptado.IV);
+
+            using MemoryStream memoryStreamDecrypt = new MemoryStream(conteudoEncriptado);
+            using CryptoStream cryptoStream = new CryptoStream(memoryStreamDecrypt, cryptoTransform, CryptoStreamMode.Read);
+            using StreamReader reader = new StreamReader(cryptoStream);
+
+            textoDesencriptado = await reader.ReadToEndAsync() ?? throw new InvalidOperationException("Erro ao desencriptografar o texto Triple DES");
+            retorno.textoDesencriptado = textoDesencriptado;
+
+            return retorno;
         }
 
         public async Task<StringEncriptada> Encriptar(string input)
@@ -25,6 +42,7 @@ namespace crypto.Encryptations
             tripleDESEncriptado.IV = _chaveTripleDES.IV;
 
             using ICryptoTransform cryptoTransform = tripleDESEncriptado.CreateEncryptor(tripleDESEncriptado.Key, tripleDESEncriptado.IV);
+
             using MemoryStream memoryStreamEncrypt = new MemoryStream();
             using CryptoStream cryptoStream = new CryptoStream(memoryStreamEncrypt, cryptoTransform, CryptoStreamMode.Write);
             using StreamWriter streamWriter = new StreamWriter(cryptoStream);

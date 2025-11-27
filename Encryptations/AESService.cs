@@ -24,7 +24,7 @@ namespace crypto.Encryptations
             using CryptoStream cryptoStream = new CryptoStream(memoryStreamDecrypt, cryptoTransform, CryptoStreamMode.Read);
             using StreamReader reader = new StreamReader(cryptoStream);
 
-            textoDesencriptado = await reader.ReadToEndAsync() ?? throw new InvalidOperationException("Erro ao desencriptografar o texto");
+            textoDesencriptado = await reader.ReadToEndAsync() ?? throw new InvalidOperationException("Erro ao desencriptografar o texto AES");
             retorno.textoDesencriptado = textoDesencriptado;
 
             return retorno;
