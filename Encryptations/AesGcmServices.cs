@@ -6,16 +6,14 @@ namespace crypto.Encryptations
 {
     public class AesGcmServices : IEncryptMethods
     {
-        AesGcm _chaveAesGcm 
-
         public Task<StringEncriptada> Desencriptar(StringEncriptada objeto)
         {
             throw new NotImplementedException();
         }
 
-        public Task<StringEncriptada> Encriptar(string input)
+        public async Task<StringEncriptada> Encriptar(string input)
         {
-            
+            throw new NotImplementedException();
         }
 
         public void InicializarEncriptacao()

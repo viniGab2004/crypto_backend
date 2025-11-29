@@ -9,12 +9,14 @@ namespace crypto.Services
     {
         private AESService _serviceAES;
         private DESService _trpleDESService;
+        private AesGcmServices _aesGcmService;
         private EncryptHandler _encryptHandler;
 
-        public EncryptServices(AESService serviceAES, EncryptHandler encryptHandler, DESService DESService) 
+        public EncryptServices(AESService serviceAES, EncryptHandler encryptHandler, DESService DESService, AesGcmServices aesGcmServices) 
         {
             _serviceAES = serviceAES;
             _trpleDESService = DESService;
+            _aesGcmService = aesGcmServices;
             _encryptHandler = encryptHandler;
         }
 
@@ -63,10 +65,9 @@ namespace crypto.Services
             return await _serviceAES.Encriptar(texto);     
         }
 
-        public Task<StringEncriptada> EncriptarAesGcm(string texto)
+        public async Task<StringEncriptada> EncriptarAesGcm(string texto)
         {
-            _encryptHandler.possuiTextoDesencriptado(texto);
-
+            throw new NotImplementedException();
         }
 
         public Task<StringEncriptada> EncriptarRC2(string texto)

@@ -14,6 +14,7 @@ builder.Services.AddScoped<EncryptServices>();
 builder.Services.AddScoped<EncryptHandler>();
 builder.Services.AddTransient<AESService>();
 builder.Services.AddTransient<DESService>();
+builder.Services.AddTransient<AesGcmServices>();
 
 var app = builder.Build();
 
