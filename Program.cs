@@ -18,11 +18,8 @@ builder.Services.AddTransient<AesGcmServices>();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.MapSwagger();
-    app.UseSwaggerUI();
-}
+app.MapSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
