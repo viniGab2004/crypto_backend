@@ -51,9 +51,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_4063C6B8A5B94A469ED04E9F6E8D6DA8 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_24EB7E4FB0D347F0A3B823A1B04F0D60 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_4AF95089A4B84CF68B25330F3FB33D15 }}
+          client-id: 7d52da5c-9cd7-46c5-b68e-ef9c0fca6975
+          tenant-id: 322cd03a-8d12-4b06-92ed-aa508fac5b26
+          subscription-id: 4c4f4b2e-3a1d-47d3-ad43-d4313b11b82a
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -62,4 +62,5 @@ jobs:
           app-name: 'crypto'
           slot-name: 'Production'
           package: .
+
           
