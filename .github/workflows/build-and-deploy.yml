@@ -1,0 +1,61 @@
+name: Encrypt deployment services
+
+on:
+    push:
+        branches:
+            - master
+
+env:
+    AZURE_WEBAPP_NAME: crypto
+    AZURE_WEBAPP_PACKAGE_PATH: './crypto/publish'
+    DOTNET_VERSION: '8.x'
+    SOLUTION_PATH: 'crypto.sln'
+    API_PROJECT_PATH: 'crypto'
+    PUBLISH_DIR: './publish'
+
+jobs:
+   build:
+      name: Build and Deploy to Azure Web App
+      runs-on: ubuntu-latest
+
+      steps:
+        - uses: actions/checkout@v4
+  
+        - name: Setup da versao do .NET Core
+          uses: actions/setup-dotnet@v4
+          with:
+              dotnet-version: ${{ env.DOTNET_VERSION }}
+
+        - name: Restore de dependencias
+          run: dotnet restore ${{ env.SOLUTION_PATH }}
+
+        - name: Build da solution
+          run: dotnet build ${{ env.SOLUTION_PATH }} --configuration Release --no-restore
+
+        - name: Publish do projeto API
+          run: dotnet publish ${{ env.API_PROJECT_PATH }} --configuration Release --no-build --output ${{ env.PUBLISH_DIR }}
+
+        - name: Publicando artefatos
+          uses: actions/upload-artifact@v4
+          with:
+            name: webapp
+            path: ${{ env.AZURE_WEBAPP_PACKPAGE_PATH }}
+   
+   deploy:
+      name: Deploy para o Azure
+      runs-on: ubuntu-latest
+      needs: build
+
+      steps:
+        - name: Download de artefatos
+          uses: actions/download-artifact@v4
+          with:
+            name: webapp
+            path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
+        - name: Deploy
+          uses: azure/webapps-deploy@v2
+          with:
+            app-name: ${{ env.AZURE_WEBAPP_NAME }}
+            publish-profile: ${{ secrets._PUBLISHAZUREPROFILE }}
+            package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
