@@ -40,6 +40,9 @@ jobs:
           with:
             name: webapp
             path: ${{ env.AZURE_WEBAPP_PACKPAGE_PATH }}
+
+        - name: Mostra estrutura da publish
+          run: ls -R ./publish
    
    deploy:
       name: Deploy para o Azure
@@ -59,3 +62,6 @@ jobs:
             app-name: ${{ env.AZURE_WEBAPP_NAME }}
             publish-profile: ${{ secrets._PUBLISHAZUREPROFILE }}
             package: ${{ env.AZURE_WEBAPP_PACKPAGE_PATH }}
+
+        - name: Mostra estrutura da publish
+          run: ls -R ./publish
