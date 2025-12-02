@@ -10,7 +10,7 @@ env:
     AZURE_WEBAPP_PACKAGE_PATH: './crypto/publish'
     DOTNET_VERSION: '8.x'
     SOLUTION_PATH: 'crypto.sln'
-    API_PROJECT_PATH: 'crypto'
+    API_PROJECT_PATH: 'crypto.csproj'
     PUBLISH_DIR: './publish'
 
 jobs:
