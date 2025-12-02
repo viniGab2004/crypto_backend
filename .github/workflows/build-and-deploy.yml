@@ -6,7 +6,7 @@ on:
             - master
 
 env:
-    AZURE_WEBAPP_NAME: crypto
+    AZURE_WEBAPP_NAME: api-cryptografy
     AZURE_WEBAPP_PACKPAGE_PATH: './publish'
     DOTNET_VERSION: '8.x'
     SOLUTION_PATH: 'crypto.sln'
