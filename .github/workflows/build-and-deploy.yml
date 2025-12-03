@@ -8,7 +8,7 @@ on:
 env:
     AZURE_WEBAPP_NAME: api-cryptografy
     AZURE_WEBAPP_PACKPAGE_PATH: './publish'
-    DOTNET_VERSION: '8.x'
+    DOTNET_VERSION: '9.x'
     SOLUTION_PATH: 'crypto.sln'
     API_PROJECT_PATH: 'crypto.csproj'
     PUBLISH_DIR: './publish'
