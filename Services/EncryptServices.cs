@@ -10,14 +10,16 @@ namespace crypto.Services
         private AESService _serviceAES;
         private DESService _trpleDESService;
         private AesGcmServices _aesGcmService;
+        private RC2Services _rc2Service;
         private EncryptHandler _encryptHandler;
 
-        public EncryptServices(AESService serviceAES, EncryptHandler encryptHandler, DESService DESService, AesGcmServices aesGcmServices) 
+        public EncryptServices(AESService serviceAES, EncryptHandler encryptHandler, DESService DESService, AesGcmServices aesGcmServices, RC2Services rc2Services) 
         {
             _serviceAES = serviceAES;
             _trpleDESService = DESService;
             _aesGcmService = aesGcmServices;
             _encryptHandler = encryptHandler;
+            _rc2Service = rc2Services;
         }
 
         #region [ DESENCRIPTAÇÕES ]
@@ -70,9 +72,10 @@ namespace crypto.Services
             throw new NotImplementedException();
         }
 
-        public Task<StringEncriptada> EncriptarRC2(string texto)
+        public async Task<StringEncriptada> EncriptarRC2(string texto)
         {
-            throw new NotImplementedException();
+            _encryptHandler.possuiTextoDesencriptado(texto);
+            return await _rc2Service.Encriptar(texto);
         }
 
         public Task<StringEncriptada> EncriptarRC4(string texto)
