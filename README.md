@@ -6,12 +6,25 @@ Uma API REST para encriptação e desencriptação de conteúdos textuais utilizando 
 
 O **Crypto API** é uma aplicação desenvolvida em .NET que fornece endpoints para realizar operações de criptografia e descriptografia de textos utilizando diferentes algoritmos de segurança. O projeto visa facilitar a implementação de recursos de segurança em aplicações que necessitam proteger informações sensíveis através de criptografia.
 
+## ?? Acesso à API
+
+A API está disponível online no Azure:
+
+**?? URL da API:** [https://api-cryptografy.azurewebsites.net/swagger/index.html](https://api-cryptografy.azurewebsites.net/swagger/index.html)
+
+### Infraestrutura
+- **Plataforma**: Azure App Service
+- **Plano**: Free Tier (F1)
+- **CI/CD**: Pipeline de integração e entrega contínua implementado
+- **Deploy automático**: Integração com GitHub para deploys automáticos
+
 ## ?? Tecnologias
 
 - **.NET 9.0**
 - **ASP.NET Core Web API**
 - **Swagger/OpenAPI** - Documentação interativa da API
 - **C# 13.0**
+- **Azure App Service** - Hospedagem em nuvem
 
 ## ??? Arquitetura do Projeto
 
@@ -23,14 +36,14 @@ O projeto segue uma arquitetura em camadas, promovendo separação de responsabili
 crypto/
 ??? Controllers/  # Camada de apresentação (API endpoints)
 ?   ??? EncryptController.cs
-??? Services/      # Camada de serviços (lógica de negócio)
+??? Services/  # Camada de serviços (lógica de negócio)
 ?   ??? EncryptServices.cs
 ??? Encryptations/       # Implementações dos algoritmos de criptografia
 ?   ??? AESService.cs
 ?   ??? DESService.cs
 ?   ??? RC2Services.cs
 ?   ??? AesGcmServices.cs
-??? Handler/             # Validações e tratamento de dados
+??? Handler/          # Validações e tratamento de dados
 ?   ??? EncryptHandler.cs
 ??? Interface/       # Contratos e abstrações
 ?   ??? IEncryptService.cs
@@ -43,17 +56,17 @@ crypto/
 
 ### Camadas da Aplicação
 
-#### 1. **Controllers (Camada de Apresentação)**
+#### 1. Controllers (Camada de Apresentação)
 - **EncryptController**: Gerencia as requisições HTTP e retorna as respostas apropriadas
 - Responsável por receber as requisições, chamar os serviços e retornar as respostas HTTP
 
-#### 2. **Services (Camada de Negócio)**
+#### 2. Services (Camada de Negócio)
 - **EncryptServices**: Orquestra as operações de criptografia e descriptografia
 - Implementa a interface `IEncryptService`
 - Aplica validações através do `EncryptHandler`
 - Delega a execução para os serviços específicos de cada algoritmo
 
-#### 3. **Encryptations (Camada de Implementação)**
+#### 3. Encryptations (Camada de Implementação)
 - Contém as implementações concretas dos algoritmos criptográficos:
   - **AESService**: Advanced Encryption Standard
   - **DESService**: Triple DES (3DES)
@@ -61,18 +74,18 @@ crypto/
   - **AesGcmServices**: AES no modo Galois/Counter Mode (em desenvolvimento)
 - Cada serviço implementa a interface `IEncryptMethods`
 
-#### 4. **Handler (Camada de Validação)**
+#### 4. Handler (Camada de Validação)
 - **EncryptHandler**: Valida os dados de entrada antes do processamento
 - Verifica a presença de texto, chave de criptografia e vetor de inicialização
 
-#### 5. **Models (Camada de Dados)**
+#### 5. Models (Camada de Dados)
 - **StringEncriptada**: Modelo que encapsula os dados de criptografia
   - `textoDesencriptado`: Texto em formato legível
   - `textoEncriptado`: Texto após criptografia
   - `chaveDeCriptografia`: Chave utilizada no processo
   - `vetorDeInicializacao`: Vetor de inicialização (IV)
 
-#### 6. **Interfaces (Contratos)**
+#### 6. Interfaces (Contratos)
 - Definem os contratos que as implementações devem seguir
 - Facilitam a manutenção e testabilidade do código
 
@@ -109,7 +122,7 @@ A API está organizada sob a rota base `/encriptar` e oferece os seguintes endpoi
 
 | Método | Endpoint | Descrição | Algoritmo |
 |--------|----------|-----------|-----------|
-| POST | `/encriptar/desencriptar-AES` | Desencripta texto usando AES | AES |
+| POST | `/encriptar/desencripta-AES` | Desencripta texto usando AES | AES |
 | POST | `/encriptar/desencripta-RC2` | Desencripta texto usando RC2 | RC2 |
 | POST | `/encriptar/desencripta-TripleDES` | Desencripta texto usando Triple DES | 3DES |
 
@@ -146,7 +159,7 @@ A API está organizada sob a rota base `/encriptar` e oferece os seguintes endpoi
 
 - [.NET 9.0 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
 
-### Passos para Execução
+### Passos para Execução Local
 
 1. Clone o repositório:
 ```bash
@@ -164,7 +177,7 @@ dotnet restore
 dotnet run
 ```
 
-4. Acesse a documentação Swagger:
+4. Acesse a documentação Swagger localmente:
 ```
 https://localhost:{porta}/swagger
 ```
@@ -209,6 +222,15 @@ builder.Services.AddTransient<AesGcmServices>();
 builder.Services.AddTransient<RC2Services>();
 ```
 
+## ?? Deploy e CI/CD
+
+O projeto está configurado com um pipeline de CI/CD que realiza deploy automático no Azure:
+
+- **Plataforma**: Azure App Service (Free Tier - F1)
+- **Processo**: Integração contínua com GitHub
+- **Deploy**: Automático a cada push na branch principal
+- **Monitoramento**: Disponível através do portal Azure
+
 ## ?? Licença
 
 Este projeto está em desenvolvimento ativo.
@@ -221,4 +243,4 @@ Este projeto está em desenvolvimento ativo.
 
 ---
 
-? Desenvolvido com .NET 9.0
+? Desenvolvido com .NET 9.0 | ?? Hospedado no Azure
