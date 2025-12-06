@@ -8,9 +8,26 @@ namespace crypto.Encryptations
     {
         private RC2 _rc2Chave = RC2.Create();
 
-        public Task<StringEncriptada> Desencriptar(StringEncriptada objeto)
+        public async Task<StringEncriptada> Desencriptar(StringEncriptada objeto)
         {
-            throw new NotImplementedException();
+            StringEncriptada retorno = new StringEncriptada();
+            RC2 rc2Desencriptado = RC2.Create();
+            string textoDesencriptado = string.Empty;
+
+            byte[] conteudoEncriptado = Convert.FromBase64String(objeto.textoEncriptado);
+            rc2Desencriptado.IV = Convert.FromBase64String(objeto.vetorDeInicializacao);
+            rc2Desencriptado.Key = Convert.FromBase64String(objeto.chaveDeCriptografia);
+
+            ICryptoTransform cryptoTransform = rc2Desencriptado.CreateDecryptor(rc2Desencriptado.Key, rc2Desencriptado.IV);
+
+            using MemoryStream memoryStream = new MemoryStream(conteudoEncriptado);
+            using CryptoStream cryptoStream = new CryptoStream(memoryStream, cryptoTransform, CryptoStreamMode.Read);
+            using StreamReader reader = new StreamReader(cryptoStream);
+
+            textoDesencriptado = await reader.ReadToEndAsync() ?? throw new InvalidOperationException("Erro ao desencriptografar o texto RC2");
+            retorno.textoDesencriptado = textoDesencriptado;
+
+            return retorno;
         }
 
         public async Task<StringEncriptada> Encriptar(string input)

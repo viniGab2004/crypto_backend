@@ -36,9 +36,12 @@ namespace crypto.Services
             throw new NotImplementedException();
         }
 
-        public Task<StringEncriptada> DesencriptarRC2(StringEncriptada stringEncriptada)
+        public async Task<StringEncriptada> DesencriptarRC2(StringEncriptada stringEncriptada)
         {
-            throw new NotImplementedException();
+            _encryptHandler.possuiTextoEncriptado(stringEncriptada.textoEncriptado);
+            _encryptHandler.possuiChaveDeCriptografia(stringEncriptada.chaveDeCriptografia);
+            _encryptHandler.possuiVetorDeInicializacao(stringEncriptada.vetorDeInicializacao);
+            return await _rc2Service.Desencriptar(stringEncriptada);
         }
 
         public Task<StringEncriptada> DesencriptarRC4(StringEncriptada stringEncriptada)
@@ -67,7 +70,7 @@ namespace crypto.Services
             return await _serviceAES.Encriptar(texto);     
         }
 
-        public async Task<StringEncriptada> EncriptarAesGcm(string texto)
+        public Task<StringEncriptada> EncriptarAesGcm(string texto)
         {
             throw new NotImplementedException();
         }
