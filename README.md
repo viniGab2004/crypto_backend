@@ -1,118 +1,118 @@
 # Crypto API
 
-Uma API REST para encriptação e desencriptação de conteúdos textuais utilizando diversos algoritmos criptográficos.
+Uma API REST para encriptaÃ§Ã£o e desencriptaÃ§Ã£o de conteÃºdos textuais utilizando diversos algoritmos criptogrÃ¡ficos.
 
 ## Sobre o Projeto
 
-O **Crypto API** é uma aplicação desenvolvida em .NET que fornece endpoints para realizar operações de criptografia e descriptografia de textos utilizando diferentes algoritmos de segurança. O projeto visa facilitar a implementação de recursos de segurança em aplicações que necessitam proteger informações sensíveis através de criptografia.
+O **Crypto API** Ã© uma aplicaÃ§Ã£o desenvolvida em .NET que fornece endpoints para realizar operaÃ§Ãµes de criptografia e descriptografia de textos utilizando diferentes algoritmos de seguranÃ§a. O projeto visa facilitar a implementaÃ§Ã£o de recursos de seguranÃ§a em aplicaÃ§Ãµes que necessitam proteger informaÃ§Ãµes sensÃ­veis atravÃ©s de criptografia.
 
-## Acesso à API
+## Acesso Ã  API
 
-A API está disponível online no Azure:
+A API estÃ¡ disponÃ­vel online no Azure:
 
 **URL da API:** [https://api-cryptografy.azurewebsites.net/swagger/index.html](https://api-cryptografy.azurewebsites.net/swagger/index.html)
 
 ### Infraestrutura
 - **Plataforma**: Azure App Service
 - **Plano**: Free Tier (F1)
-- **CI/CD**: Pipeline de integração e entrega contínua implementado
-- **Deploy automático**: Integração com GitHub para deploys automáticos
+- **CI/CD**: Pipeline de integraÃ§Ã£o e entrega contÃ­nua implementado
+- **Deploy automÃ¡tico**: IntegraÃ§Ã£o com GitHub Actions para deploys automÃ¡ticos
 
 ## Tecnologias
 
 - **.NET 9.0**
 - **ASP.NET Core Web API**
-- **Swagger/OpenAPI** - Documentação interativa da API
+- **Swagger/OpenAPI** - DocumentaÃ§Ã£o interativa da API
 - **C# 13.0**
 - **Azure App Service** - Hospedagem em nuvem
 
 ## Arquitetura do Projeto
 
-O projeto segue uma arquitetura em camadas, promovendo separação de responsabilidades e manutenibilidade:
+O projeto segue uma arquitetura em camadas, promovendo separaÃ§Ã£o de responsabilidades e manutenibilidade:
 
 ### Estrutura de Pastas
 
 ```
 crypto/
-??? Controllers/ # Camada de apresentação (API endpoints)
+??? Controllers/ # Camada de apresentaÃ§Ã£o (API endpoints)
 ? ??? EncryptController.cs
 ?   ??? DecryptController.cs
-??? Services/       # Camada de serviços (lógica de negócio)
+??? Services/       # Camada de serviÃ§os (lÃ³gica de negÃ³cio)
 ?   ??? EncryptServices.cs
-??? Encryptations/# Implementações dos algoritmos de criptografia
+??? Encryptations/# ImplementaÃ§Ãµes dos algoritmos de criptografia
 ?   ??? AESService.cs
 ?   ??? DESService.cs
 ?   ??? RC2Services.cs
 ?   ??? AesGcmServices.cs
-??? Handler/     # Validações e tratamento de dados
+??? Handler/     # ValidaÃ§Ãµes e tratamento de dados
 ?   ??? EncryptHandler.cs
-??? Interface/            # Contratos e abstrações
+??? Interface/            # Contratos e abstraÃ§Ãµes
 ?   ??? IEncryptService.cs
 ?   ??? IEncryptMethods.cs
 ?   ??? IHandlerEncryptService.cs
 ??? Models/   # Modelos de dados
 ?   ??? StringEncriptada.cs
-??? Program.cs    # Configuração e inicialização da aplicação
+??? Program.cs    # ConfiguraÃ§Ã£o e inicializaÃ§Ã£o da aplicaÃ§Ã£o
 ```
 
-### Camadas da Aplicação
+### Camadas da AplicaÃ§Ã£o
 
-#### 1. Controllers (Camada de Apresentação)
-- **EncryptController**: Gerencia as requisições HTTP para operações de encriptação
-- **DecryptController**: Gerencia as requisições HTTP para operações de desencriptação
-- Responsável por receber as requisições, chamar os serviços e retornar as respostas HTTP
+#### 1. Controllers (Camada de ApresentaÃ§Ã£o)
+- **EncryptController**: Gerencia as requisiÃ§Ãµes HTTP para operaÃ§Ãµes de encriptaÃ§Ã£o
+- **DecryptController**: Gerencia as requisiÃ§Ãµes HTTP para operaÃ§Ãµes de desencriptaÃ§Ã£o
+- ResponsÃ¡vel por receber as requisiÃ§Ãµes, chamar os serviÃ§os e retornar as respostas HTTP
 
-#### 2. Services (Camada de Negócio)
-- **EncryptServices**: Orquestra as operações de criptografia e descriptografia
+#### 2. Services (Camada de NegÃ³cio)
+- **EncryptServices**: Orquestra as operaÃ§Ãµes de criptografia e descriptografia
 - Implementa a interface `IEncryptService`
-- Aplica validações através do `EncryptHandler`
-- Delega a execução para os serviços específicos de cada algoritmo
+- Aplica validaÃ§Ãµes atravÃ©s do `EncryptHandler`
+- Delega a execuÃ§Ã£o para os serviÃ§os especÃ­ficos de cada algoritmo
 
-#### 3. Encryptations (Camada de Implementação)
-- Contém as implementações concretas dos algoritmos criptográficos:
+#### 3. Encryptations (Camada de ImplementaÃ§Ã£o)
+- ContÃ©m as implementaÃ§Ãµes concretas dos algoritmos criptogrÃ¡ficos:
   - **AESService**: Advanced Encryption Standard
   - **DESService**: Triple DES (3DES)
   - **RC2Services**: Rivest Cipher 2
   - **AesGcmServices**: AES no modo Galois/Counter Mode (em desenvolvimento)
-- Cada serviço implementa a interface `IEncryptMethods`
+- Cada serviÃ§o implementa a interface `IEncryptMethods`
 
-#### 4. Handler (Camada de Validação)
+#### 4. Handler (Camada de ValidaÃ§Ã£o)
 - **EncryptHandler**: Valida os dados de entrada antes do processamento
-- Verifica a presença de texto, chave de criptografia e vetor de inicialização
+- Verifica a presenÃ§a de texto, chave de criptografia e vetor de inicializaÃ§Ã£o
 
 #### 5. Models (Camada de Dados)
 - **StringEncriptada**: Modelo que encapsula os dados de criptografia
-  - `textoDesencriptado`: Texto em formato legível
-  - `textoEncriptado`: Texto após criptografia
+  - `textoDesencriptado`: Texto em formato legÃ­vel
+  - `textoEncriptado`: Texto apÃ³s criptografia
   - `chaveDeCriptografia`: Chave utilizada no processo
-  - `vetorDeInicializacao`: Vetor de inicialização (IV)
+  - `vetorDeInicializacao`: Vetor de inicializaÃ§Ã£o (IV)
 
 #### 6. Interfaces (Contratos)
-- Definem os contratos que as implementações devem seguir
-- Facilitam a manutenção e testabilidade do código
+- Definem os contratos que as implementaÃ§Ãµes devem seguir
+- Facilitam a manutenÃ§Ã£o e testabilidade do cÃ³digo
 
 ## Endpoints Implementados
 
-A API está organizada em dois controllers distintos para melhor organização:
+A API estÃ¡ organizada em dois controllers distintos para melhor organizaÃ§Ã£o:
 
-### Encriptação
+### EncriptaÃ§Ã£o
 
 Rota base: `/encriptar`
 
-| Método | Endpoint | Descrição | Algoritmo |
+| MÃ©todo | Endpoint | DescriÃ§Ã£o | Algoritmo |
 |--------|----------|-----------|-----------|
 | POST | `/encriptar/encripta-AES` | Encripta texto usando AES | AES |
 | POST | `/encriptar/encripta-RC2` | Encripta texto usando RC2 | RC2 |
 | POST | `/encriptar/encripta-TripleDES` | Encripta texto usando Triple DES | 3DES |
 
-#### Request Body (Encriptação)
+#### Request Body (EncriptaÃ§Ã£o)
 ```json
 {
   "textoDesencriptado": "Texto a ser criptografado"
 }
 ```
 
-#### Response (Encriptação)
+#### Response (EncriptaÃ§Ã£o)
 ```json
 {
   "textoDesencriptado": "Texto a ser criptografado",
@@ -122,17 +122,15 @@ Rota base: `/encriptar`
 }
 ```
 
-### Desencriptação
+### ?? DesencriptaÃ§Ã£o
 
-Rota base: `/desencriptar`
-
-| Método | Endpoint | Descrição | Algoritmo |
+| MÃ©todo | Endpoint | DescriÃ§Ã£o | Algoritmo |
 |--------|----------|-----------|-----------|
 | POST | `/desencriptar/desencriptar-AES` | Desencripta texto usando AES | AES |
 | POST | `/desencriptar/desencripta-RC2` | Desencripta texto usando RC2 | RC2 |
 | POST | `/desencriptar/desencripta-TripleDES` | Desencripta texto usando Triple DES | 3DES |
 
-#### Request Body (Desencriptação)
+#### Request Body (DesencriptaÃ§Ã£o)
 ```json
 {
   "textoEncriptado": "Base64EncodedEncryptedText",
@@ -141,7 +139,7 @@ Rota base: `/desencriptar`
 }
 ```
 
-#### Response (Desencriptação)
+#### Response (DesencriptaÃ§Ã£o)
 ```json
 {
   "textoDesencriptado": "Texto original descriptografado",
@@ -151,39 +149,39 @@ Rota base: `/desencriptar`
 }
 ```
 
-### Códigos de Status
+### CÃ³digos de Status
 
-| Código | Descrição |
+| CÃ³digo | DescriÃ§Ã£o |
 |--------|-----------|
-| 200 | Operação realizada com sucesso |
-| 400 | Dados de entrada inválidos (ArgumentException) |
+| 200 | OperaÃ§Ã£o realizada com sucesso |
+| 400 | Dados de entrada invÃ¡lidos (ArgumentException) |
 | 500 | Erro interno no processamento (InvalidOperationException) |
 
-## Instalação e Execução
+## InstalaÃ§Ã£o e ExecuÃ§Ã£o
 
-### Pré-requisitos
+### PrÃ©-requisitos
 
 - [.NET 9.0 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
 
-### Passos para Execução Local
+### Passos para ExecuÃ§Ã£o Local
 
-1. Clone o repositório:
+1. Clone o repositÃ³rio:
 ```bash
 git clone https://github.com/viniGab2004/crypto_backend.git
 cd crypto_backend
 ```
 
-2. Restaure as dependências:
+2. Restaure as dependÃªncias:
 ```bash
 dotnet restore
 ```
 
-3. Execute a aplicação:
+3. Execute a aplicaÃ§Ã£o:
 ```bash
 dotnet run
 ```
 
-4. Acesse a documentação Swagger localmente:
+4. Acesse a documentaÃ§Ã£o Swagger localmente:
 ```
 https://localhost:{porta}/swagger
 ```
@@ -191,33 +189,33 @@ https://localhost:{porta}/swagger
 ## Algoritmos Suportados
 
 ### Implementados
-- **AES (Advanced Encryption Standard)**: Algoritmo de criptografia simétrica amplamente utilizado
-- **Triple DES (3DES)**: Versão aprimorada do DES com tripla encriptação
-- **RC2 (Rivest Cipher 2)**: Algoritmo de criptografia de bloco de tamanho variável
+- **AES (Advanced Encryption Standard)**: Algoritmo de criptografia simÃ©trica amplamente utilizado
+- **Triple DES (3DES)**: VersÃ£o aprimorada do DES com tripla encriptaÃ§Ã£o
+- **RC2 (Rivest Cipher 2)**: Algoritmo de criptografia de bloco de tamanho variÃ¡vel
 
 ### Em Desenvolvimento
-- **AES-GCM (Galois/Counter Mode)**: Modo de operação do AES que fornece autenticação
+- **AES-GCM (Galois/Counter Mode)**: Modo de operaÃ§Ã£o do AES que fornece autenticaÃ§Ã£o
 - **RC4**: Cifra de fluxo
-- **RSA**: Criptografia assimétrica
+- **RSA**: Criptografia assimÃ©trica
 
 ## Funcionalidades Futuras
 
-Baseado na interface `IEncryptService`, os seguintes endpoints estão planejados:
+Baseado na interface `IEncryptService`, os seguintes endpoints estÃ£o planejados:
 
-- [x] AES - Implementado
-- [x] Triple DES - Implementado
-- [x] RC2 - Implementado
-- [ ] AES-GCM - Em desenvolvimento
-- [ ] RC4 - Planejado
-- [ ] RSA - Planejado
+- ? AES - Implementado
+- ? Triple DES - Implementado
+- ? RC2 - Implementado
+- ? AES-GCM - Em desenvolvimento
+- ? RC4 - Planejado
+- ? RSA - Planejado
 
-## Dependências
+## DependÃªncias
 
-- **Swashbuckle.AspNetCore (9.0.6)**: Geração de documentação Swagger/OpenAPI
+- **Swashbuckle.AspNetCore (9.0.6)**: GeraÃ§Ã£o de documentaÃ§Ã£o Swagger/OpenAPI
 
-## Configuração de Injeção de Dependências
+## ConfiguraÃ§Ã£o de InjeÃ§Ã£o de DependÃªncias
 
-O projeto utiliza injeção de dependências nativa do ASP.NET Core:
+O projeto utiliza injeÃ§Ã£o de dependÃªncias nativa do ASP.NET Core:
 
 ```csharp
 builder.Services.AddScoped<EncryptServices>();
@@ -228,22 +226,22 @@ builder.Services.AddTransient<AesGcmServices>();
 builder.Services.AddTransient<RC2Services>();
 ```
 
-## Deploy e CI/CD
+## ?? Deploy e CI/CD
 
-O projeto está configurado com um pipeline de CI/CD que realiza deploy automático no Azure:
+O projeto estÃ¡ configurado com um pipeline de CI/CD que realiza deploy automÃ¡tico no Azure:
 
 - **Plataforma**: Azure App Service (Free Tier - F1)
-- **Processo**: Integração contínua com GitHub
-- **Deploy**: Automático a cada push na branch principal
-- **Monitoramento**: Disponível através do portal Azure
+- **Processo**: IntegraÃ§Ã£o contÃ­nua com GitHub
+- **Deploy**: AutomÃ¡tico a cada push na branch principal
+- **Monitoramento**: DisponÃ­vel atravÃ©s do portal Azure
 
-## Licença
+## ?? LicenÃ§a
 
-Este projeto está em desenvolvimento ativo.
+Este projeto estÃ¡ em desenvolvimento ativo.
 
-## Autor
+## ?? Autor
 
-**Vinícius Gabriel**
+**VinÃ­cius Gabriel**
 
 - GitHub: [@viniGab2004](https://github.com/viniGab2004)
 
