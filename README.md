@@ -34,25 +34,25 @@ O projeto segue uma arquitetura em camadas, promovendo separação de responsabi
 
 ```
 crypto/
-??? Controllers/ # Camada de apresentação (API endpoints)
-? ??? EncryptController.cs
-?   ??? DecryptController.cs
-??? Services/       # Camada de serviços (lógica de negócio)
-?   ??? EncryptServices.cs
-??? Encryptations/# Implementações dos algoritmos de criptografia
-?   ??? AESService.cs
-?   ??? DESService.cs
-?   ??? RC2Services.cs
-?   ??? AesGcmServices.cs
-??? Handler/     # Validações e tratamento de dados
-?   ??? EncryptHandler.cs
-??? Interface/            # Contratos e abstrações
-?   ??? IEncryptService.cs
-?   ??? IEncryptMethods.cs
-?   ??? IHandlerEncryptService.cs
-??? Models/   # Modelos de dados
-?   ??? StringEncriptada.cs
-??? Program.cs    # Configuração e inicialização da aplicação
+├── Controllers/ # Camada de apresentação (API endpoints)
+│   ├── EncryptController.cs
+│   └── DecryptController.cs
+├── Services/       # Camada de serviços (lógica de negócio)
+│   └── EncryptServices.cs
+├── Encryptations/# Implementações dos algoritmos de criptografia
+│   ├── AESService.cs
+│   ├── DESService.cs
+│   ├── RC2Services.cs
+│   └── AesGcmServices.cs
+├── Handler/     # Validações e tratamento de dados
+│   └── EncryptHandler.cs
+├── Interface/# Contratos e abstrações
+│   ├── IEncryptService.cs
+│   ├── IEncryptMethods.cs
+│   └── IHandlerEncryptService.cs
+├── Models/   # Modelos de dados
+│   └── StringEncriptada.cs
+└── Program.cs    # Configuração e inicialização da aplicação
 ```
 
 ### Camadas da Aplicação
@@ -122,7 +122,9 @@ Rota base: `/encriptar`
 }
 ```
 
-### ?? Desencriptação
+### Desencriptação
+
+Rota base: `/desencriptar`
 
 | Método | Endpoint | Descrição | Algoritmo |
 |--------|----------|-----------|-----------|
@@ -202,12 +204,12 @@ https://localhost:{porta}/swagger
 
 Baseado na interface `IEncryptService`, os seguintes endpoints estão planejados:
 
-- ? AES - Implementado
-- ? Triple DES - Implementado
-- ? RC2 - Implementado
-- ? AES-GCM - Em desenvolvimento
-- ? RC4 - Planejado
-- ? RSA - Planejado
+- [x] AES - Implementado
+- [x] Triple DES - Implementado
+- [x] RC2 - Implementado
+- [ ] AES-GCM - Em desenvolvimento
+- [ ] RC4 - Planejado
+- [ ] RSA - Planejado
 
 ## Dependências
 
@@ -226,7 +228,7 @@ builder.Services.AddTransient<AesGcmServices>();
 builder.Services.AddTransient<RC2Services>();
 ```
 
-## ?? Deploy e CI/CD
+## Deploy e CI/CD
 
 O projeto está configurado com um pipeline de CI/CD que realiza deploy automático no Azure:
 
@@ -235,11 +237,11 @@ O projeto está configurado com um pipeline de CI/CD que realiza deploy automát
 - **Deploy**: Automático a cada push na branch principal
 - **Monitoramento**: Disponível através do portal Azure
 
-## ?? Licença
+## Licença
 
 Este projeto está em desenvolvimento ativo.
 
-## ?? Autor
+## Autor
 
 **Vinícius Gabriel**
 
