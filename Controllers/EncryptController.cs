@@ -71,5 +71,24 @@ namespace crypto.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost]
+        [Route("encripta-AesGcm")]
+        public IActionResult EncriptaAesGcm([FromBody] StringEncriptada objeto) 
+        {
+            try
+            {
+                StringEncriptada objetoEncriptado = _services.EncriptarAesGcm(objeto.textoDesencriptado);
+                return Ok(objetoEncriptado);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

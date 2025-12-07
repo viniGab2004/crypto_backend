@@ -34,62 +34,87 @@ O projeto segue uma arquitetura em camadas, promovendo separação de responsabi
 
 ```
 crypto/
-├── Controllers/ # Camada de apresentação (API endpoints)
+├── Controllers/    # Camada de apresentação (API endpoints)
 │   ├── EncryptController.cs
 │   └── DecryptController.cs
-├── Services/       # Camada de serviços (lógica de negócio)
-│   └── EncryptServices.cs
-├── Encryptations/# Implementações dos algoritmos de criptografia
+├── Services/# Camada de serviços (lógica de negócio)
+│   ├── EncryptServices.cs
+│   └── DecryptServices.cs
+├── Encryptations/  # Implementações dos algoritmos de criptografia
 │   ├── AESService.cs
 │   ├── DESService.cs
 │   ├── RC2Services.cs
 │   └── AesGcmServices.cs
-├── Handler/     # Validações e tratamento de dados
+├── Handler/        # Validações e tratamento de dados
 │   └── EncryptHandler.cs
-├── Interface/# Contratos e abstrações
+├── Interface/      # Contratos e abstrações
 │   ├── IEncryptService.cs
+│   ├── IDecryptService.cs
 │   ├── IEncryptMethods.cs
-│   └── IHandlerEncryptService.cs
-├── Models/   # Modelos de dados
+│   └── IAesGcmServices.cs
+├── Models/         # Modelos de dados
 │   └── StringEncriptada.cs
-└── Program.cs    # Configuração e inicialização da aplicação
+└── Program.cs  # Configuração e inicialização da aplicação
 ```
 
 ### Camadas da Aplicação
 
 #### 1. Controllers (Camada de Apresentação)
 - **EncryptController**: Gerencia as requisições HTTP para operações de encriptação
+  - Rota base: `/encriptar`
+  - Endpoints: AES, Triple DES, RC2, AES-GCM
 - **DecryptController**: Gerencia as requisições HTTP para operações de desencriptação
+  - Rota base: `/desencriptar`
+  - Endpoints: AES, Triple DES, RC2
 - Responsável por receber as requisições, chamar os serviços e retornar as respostas HTTP
+- Implementa tratamento de exceções com códigos HTTP apropriados
 
 #### 2. Services (Camada de Negócio)
-- **EncryptServices**: Orquestra as operações de criptografia e descriptografia
-- Implementa a interface `IEncryptService`
-- Aplica validações através do `EncryptHandler`
-- Delega a execução para os serviços específicos de cada algoritmo
+- **EncryptServices**: Orquestra as operações de criptografia
+  - Implementa a interface `IEncryptService`
+  - Aplica validações através do `EncryptHandler`
+  - Delega a execução para os serviços específicos de cada algoritmo
+- **DecryptServices**: Orquestra as operações de descriptografia
+  - Implementa a interface `IDecryptService`
+  - Aplica validações de texto encriptado, chave e vetor de inicialização
+  - Delega a execução para os serviços específicos de cada algoritmo
 
 #### 3. Encryptations (Camada de Implementação)
-- Contém as implementações concretas dos algoritmos criptográficos:
-  - **AESService**: Advanced Encryption Standard
-  - **DESService**: Triple DES (3DES)
-  - **RC2Services**: Rivest Cipher 2
-  - **AesGcmServices**: AES no modo Galois/Counter Mode (em desenvolvimento)
-- Cada serviço implementa a interface `IEncryptMethods`
+Contém as implementações concretas dos algoritmos criptográficos:
+- **AESService**: Advanced Encryption Standard
+  - Implementa `IEncryptMethods`
+  - Suporta encriptação e desencriptação
+- **DESService**: Triple DES (3DES)
+  - Implementa `IEncryptMethods`
+  - Suporta encriptação e desencriptação
+- **RC2Services**: Rivest Cipher 2
+  - Implementa `IEncryptMethods`
+  - Suporta encriptação e desencriptação
+- **AesGcmServices**: AES no modo Galois/Counter Mode
+  - Implementa `IAesGcmServices`
+  - Encriptação implementada (não utiliza IV tradicional)
+  - Desencriptação em desenvolvimento
 
 #### 4. Handler (Camada de Validação)
-- **EncryptHandler**: Valida os dados de entrada antes do processamento
-- Verifica a presença de texto, chave de criptografia e vetor de inicialização
+- **EncryptHandler**: Implementa `IHandlerEncryptService`
+  - `possuiTextoDesencriptado`: Valida a presença de texto para encriptar
+  - `possuiTextoEncriptado`: Valida a presença de texto encriptado
+  - `possuiChaveDeCriptografia`: Valida a presença da chave de criptografia
+  - `possuiVetorDeInicializacao`: Valida a presença do vetor de inicialização
 
 #### 5. Models (Camada de Dados)
 - **StringEncriptada**: Modelo que encapsula os dados de criptografia
   - `textoDesencriptado`: Texto em formato legível
-  - `textoEncriptado`: Texto após criptografia
-  - `chaveDeCriptografia`: Chave utilizada no processo
-  - `vetorDeInicializacao`: Vetor de inicialização (IV)
+  - `textoEncriptado`: Texto após criptografia (Base64)
+  - `chaveDeCriptografia`: Chave utilizada no processo (Base64)
+  - `vetorDeInicializacao`: Vetor de inicialização - IV (Base64)
 
 #### 6. Interfaces (Contratos)
-- Definem os contratos que as implementações devem seguir
-- Facilitam a manutenção e testabilidade do código
+- **IEncryptService**: Define os métodos de encriptação para todos os algoritmos
+- **IDecryptService**: Define os métodos de desencriptação para todos os algoritmos
+- **IEncryptMethods**: Contrato para implementação de algoritmos de criptografia simétrica
+- **IAesGcmServices**: Contrato específico para o serviço AES-GCM
+- Facilitam a manutenção, testabilidade e extensibilidade do código
 
 ## Endpoints Implementados
 
@@ -99,11 +124,12 @@ A API está organizada em dois controllers distintos para melhor organização:
 
 Rota base: `/encriptar`
 
-| Método | Endpoint | Descrição | Algoritmo |
-|--------|----------|-----------|-----------|
-| POST | `/encriptar/encripta-AES` | Encripta texto usando AES | AES |
-| POST | `/encriptar/encripta-RC2` | Encripta texto usando RC2 | RC2 |
-| POST | `/encriptar/encripta-TripleDES` | Encripta texto usando Triple DES | 3DES |
+| Método | Endpoint | Descrição | Algoritmo | Status |
+|--------|----------|-----------|-----------|--------|
+| POST | `/encriptar/encripta-AES` | Encripta texto usando AES | AES | Implementado |
+| POST | `/encriptar/encripta-RC2` | Encripta texto usando RC2 | RC2 | Implementado |
+| POST | `/encriptar/encripta-TripleDES` | Encripta texto usando Triple DES | 3DES | Implementado |
+| POST | `/encriptar/encripta-AesGcm` | Encripta texto usando AES-GCM | AES-GCM | Implementado |
 
 #### Request Body (Encriptação)
 ```json
@@ -112,7 +138,7 @@ Rota base: `/encriptar`
 }
 ```
 
-#### Response (Encriptação)
+#### Response (Encriptação - AES, RC2, Triple DES)
 ```json
 {
   "textoDesencriptado": "Texto a ser criptografado",
@@ -122,15 +148,26 @@ Rota base: `/encriptar`
 }
 ```
 
+#### Response (Encriptação - AES-GCM)
+```json
+{
+  "textoDesencriptado": "",
+  "textoEncriptado": "Base64EncodedEncryptedText",
+  "chaveDeCriptografia": "Base64EncodedKey",
+  "vetorDeInicializacao": ""
+}
+```
+**Nota**: AES-GCM não utiliza vetor de inicialização (IV) tradicional. O nonce e a tag de autenticação são combinados com o texto encriptado.
+
 ### Desencriptação
 
-Rota base: `/desencriptar`
+Rota base: `/desencripar`
 
-| Método | Endpoint | Descrição | Algoritmo |
-|--------|----------|-----------|-----------|
-| POST | `/desencriptar/desencriptar-AES` | Desencripta texto usando AES | AES |
-| POST | `/desencriptar/desencripta-RC2` | Desencripta texto usando RC2 | RC2 |
-| POST | `/desencriptar/desencripta-TripleDES` | Desencripta texto usando Triple DES | 3DES |
+| Método | Endpoint | Descrição | Algoritmo | Status |
+|--------|----------|-----------|-----------|--------|
+| POST | `/desencripar/desencripta-AES` | Desencripta texto usando AES | AES | Implementado |
+| POST | `/desencripar/desencripta-RC2` | Desencripta texto usando RC2 | RC2 | Implementado |
+| POST | `/desencripar/desencripta-TripleDES` | Desencripta texto usando Triple DES | 3DES | Implementado |
 
 #### Request Body (Desencriptação)
 ```json
@@ -192,24 +229,32 @@ https://localhost:{porta}/swagger
 
 ### Implementados
 - **AES (Advanced Encryption Standard)**: Algoritmo de criptografia simétrica amplamente utilizado
+  - Encriptação: Implementado
+  - Desencriptação: Implementado
 - **Triple DES (3DES)**: Versão aprimorada do DES com tripla encriptação
+  - Encriptação: Implementado
+  - Desencriptação: Implementado
 - **RC2 (Rivest Cipher 2)**: Algoritmo de criptografia de bloco de tamanho variável
-
-### Em Desenvolvimento
+  - Encriptação: Implementado
+  - Desencriptação: Implementado
 - **AES-GCM (Galois/Counter Mode)**: Modo de operação do AES que fornece autenticação
+  - Encriptação: Implementado
+  - Desencriptação: Em desenvolvimento
+
+### Planejados
 - **RC4**: Cifra de fluxo
 - **RSA**: Criptografia assimétrica
 
-## Funcionalidades Futuras
+## Funcionalidades por Algoritmo
 
-Baseado na interface `IEncryptService`, os seguintes endpoints estão planejados:
-
-- [x] AES - Implementado
-- [x] Triple DES - Implementado
-- [x] RC2 - Implementado
-- [ ] AES-GCM - Em desenvolvimento
-- [ ] RC4 - Planejado
-- [ ] RSA - Planejado
+| Algoritmo | Encriptação | Desencriptação |
+|-----------|-------------|----------------|
+| AES | Implementado | Implementado |
+| Triple DES | Implementado | Implementado |
+| RC2 | Implementado | Implementado |
+| AES-GCM | Implementado | Em desenvolvimento |
+| RC4 | Planejado | Planejado |
+| RSA | Planejado | Planejado |
 
 ## Dependências
 
@@ -220,13 +265,23 @@ Baseado na interface `IEncryptService`, os seguintes endpoints estão planejados
 O projeto utiliza injeção de dependências nativa do ASP.NET Core:
 
 ```csharp
+// Services
 builder.Services.AddScoped<EncryptServices>();
+builder.Services.AddScoped<DecryptServices>();
+
+// Handler
 builder.Services.AddScoped<EncryptHandler>();
+
+// Encryptation Implementations
 builder.Services.AddTransient<AESService>();
 builder.Services.AddTransient<DESService>();
 builder.Services.AddTransient<AesGcmServices>();
 builder.Services.AddTransient<RC2Services>();
 ```
+
+### Ciclos de Vida
+- **Scoped**: Services e Handler (uma instância por requisição HTTP)
+- **Transient**: Serviços de encriptação (nova instância a cada injeção)
 
 ## Deploy e CI/CD
 

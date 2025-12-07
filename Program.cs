@@ -11,6 +11,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<EncryptServices>();
+builder.Services.AddScoped<DecryptServices>();
 builder.Services.AddScoped<EncryptHandler>();
 builder.Services.AddTransient<AESService>();
 builder.Services.AddTransient<DESService>();

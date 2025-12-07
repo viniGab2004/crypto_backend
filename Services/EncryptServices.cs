@@ -22,57 +22,16 @@ namespace crypto.Services
             _rc2Service = rc2Services;
         }
 
-        #region [ DESENCRIPTAÇÕES ]
-        public async Task<StringEncriptada> DesencriptarAES(StringEncriptada stringEncriptada)
-        {
-            _encryptHandler.possuiTextoEncriptado(stringEncriptada.textoEncriptado);
-            _encryptHandler.possuiChaveDeCriptografia(stringEncriptada.chaveDeCriptografia);
-            _encryptHandler.possuiVetorDeInicializacao(stringEncriptada.vetorDeInicializacao);
-            return await _serviceAES.Desencriptar(stringEncriptada);
-        }
-
-        public Task<StringEncriptada> DesencriptarAesGcm(StringEncriptada stringEncriptada)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<StringEncriptada> DesencriptarRC2(StringEncriptada stringEncriptada)
-        {
-            _encryptHandler.possuiTextoEncriptado(stringEncriptada.textoEncriptado);
-            _encryptHandler.possuiChaveDeCriptografia(stringEncriptada.chaveDeCriptografia);
-            _encryptHandler.possuiVetorDeInicializacao(stringEncriptada.vetorDeInicializacao);
-            return await _rc2Service.Desencriptar(stringEncriptada);
-        }
-
-        public Task<StringEncriptada> DesencriptarRC4(StringEncriptada stringEncriptada)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<StringEncriptada> DesencriptarRSA(StringEncriptada stringEncriptada)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<StringEncriptada> DesencriptarTripleDES(StringEncriptada stringEncriptada)
-        {
-            _encryptHandler.possuiTextoEncriptado(stringEncriptada.textoEncriptado);
-            _encryptHandler.possuiChaveDeCriptografia(stringEncriptada.chaveDeCriptografia);
-            _encryptHandler.possuiVetorDeInicializacao(stringEncriptada.vetorDeInicializacao);
-            return await _trpleDESService.Desencriptar(stringEncriptada);
-        }
-        #endregion
-
-        #region [ ENCRIPTAÇÕES ]
         public async Task<StringEncriptada> EncriptarAES(string texto)
         {
             _encryptHandler.possuiTextoDesencriptado(texto);
             return await _serviceAES.Encriptar(texto);     
         }
 
-        public Task<StringEncriptada> EncriptarAesGcm(string texto)
+        public StringEncriptada EncriptarAesGcm(string texto)
         {
-            throw new NotImplementedException();
+            _encryptHandler.possuiTextoDesencriptado(texto);
+            return _aesGcmService.Encriptar(texto);
         }
 
         public async Task<StringEncriptada> EncriptarRC2(string texto)
@@ -96,7 +55,5 @@ namespace crypto.Services
             _encryptHandler.possuiTextoDesencriptado(texto);
             return await _trpleDESService.Encriptar(texto);
         }
-        #endregion
-
     }
 }

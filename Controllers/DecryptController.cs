@@ -8,9 +8,9 @@ namespace crypto.Controllers
     [Route("desencriptar")]
     public class DecryptController : Controller
     {
-        private EncryptServices _services;
+        private DecryptServices _services;
 
-        public DecryptController(EncryptServices services)
+        public DecryptController(DecryptServices services)
         {
             _services = services;
         }
