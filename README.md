@@ -2,15 +2,15 @@
 
 Uma API REST para encriptação e desencriptação de conteúdos textuais utilizando diversos algoritmos criptográficos.
 
-## ?? Sobre o Projeto
+## Sobre o Projeto
 
 O **Crypto API** é uma aplicação desenvolvida em .NET que fornece endpoints para realizar operações de criptografia e descriptografia de textos utilizando diferentes algoritmos de segurança. O projeto visa facilitar a implementação de recursos de segurança em aplicações que necessitam proteger informações sensíveis através de criptografia.
 
-## ?? Acesso à API
+## Acesso à API
 
 A API está disponível online no Azure:
 
-**?? URL da API:** [https://api-cryptografy.azurewebsites.net/swagger/index.html](https://api-cryptografy.azurewebsites.net/swagger/index.html)
+**URL da API:** [https://api-cryptografy.azurewebsites.net/swagger/index.html](https://api-cryptografy.azurewebsites.net/swagger/index.html)
 
 ### Infraestrutura
 - **Plataforma**: Azure App Service
@@ -18,7 +18,7 @@ A API está disponível online no Azure:
 - **CI/CD**: Pipeline de integração e entrega contínua implementado
 - **Deploy automático**: Integração com GitHub para deploys automáticos
 
-## ?? Tecnologias
+## Tecnologias
 
 - **.NET 9.0**
 - **ASP.NET Core Web API**
@@ -26,7 +26,7 @@ A API está disponível online no Azure:
 - **C# 13.0**
 - **Azure App Service** - Hospedagem em nuvem
 
-## ??? Arquitetura do Projeto
+## Arquitetura do Projeto
 
 O projeto segue uma arquitetura em camadas, promovendo separação de responsabilidades e manutenibilidade:
 
@@ -34,30 +34,32 @@ O projeto segue uma arquitetura em camadas, promovendo separação de responsabili
 
 ```
 crypto/
-??? Controllers/  # Camada de apresentação (API endpoints)
-?   ??? EncryptController.cs
-??? Services/  # Camada de serviços (lógica de negócio)
+??? Controllers/ # Camada de apresentação (API endpoints)
+? ??? EncryptController.cs
+?   ??? DecryptController.cs
+??? Services/       # Camada de serviços (lógica de negócio)
 ?   ??? EncryptServices.cs
-??? Encryptations/       # Implementações dos algoritmos de criptografia
+??? Encryptations/# Implementações dos algoritmos de criptografia
 ?   ??? AESService.cs
 ?   ??? DESService.cs
 ?   ??? RC2Services.cs
 ?   ??? AesGcmServices.cs
-??? Handler/          # Validações e tratamento de dados
+??? Handler/     # Validações e tratamento de dados
 ?   ??? EncryptHandler.cs
-??? Interface/       # Contratos e abstrações
+??? Interface/            # Contratos e abstrações
 ?   ??? IEncryptService.cs
 ?   ??? IEncryptMethods.cs
 ?   ??? IHandlerEncryptService.cs
 ??? Models/   # Modelos de dados
 ?   ??? StringEncriptada.cs
-??? Program.cs     # Configuração e inicialização da aplicação
+??? Program.cs    # Configuração e inicialização da aplicação
 ```
 
 ### Camadas da Aplicação
 
 #### 1. Controllers (Camada de Apresentação)
-- **EncryptController**: Gerencia as requisições HTTP e retorna as respostas apropriadas
+- **EncryptController**: Gerencia as requisições HTTP para operações de encriptação
+- **DecryptController**: Gerencia as requisições HTTP para operações de desencriptação
 - Responsável por receber as requisições, chamar os serviços e retornar as respostas HTTP
 
 #### 2. Services (Camada de Negócio)
@@ -89,11 +91,13 @@ crypto/
 - Definem os contratos que as implementações devem seguir
 - Facilitam a manutenção e testabilidade do código
 
-## ?? Endpoints Implementados
+## Endpoints Implementados
 
-A API está organizada sob a rota base `/encriptar` e oferece os seguintes endpoints:
+A API está organizada em dois controllers distintos para melhor organização:
 
-### ?? Encriptação
+### Encriptação
+
+Rota base: `/encriptar`
 
 | Método | Endpoint | Descrição | Algoritmo |
 |--------|----------|-----------|-----------|
@@ -118,13 +122,15 @@ A API está organizada sob a rota base `/encriptar` e oferece os seguintes endpoi
 }
 ```
 
-### ?? Desencriptação
+### Desencriptação
+
+Rota base: `/desencriptar`
 
 | Método | Endpoint | Descrição | Algoritmo |
 |--------|----------|-----------|-----------|
-| POST | `/encriptar/desencripta-AES` | Desencripta texto usando AES | AES |
-| POST | `/encriptar/desencripta-RC2` | Desencripta texto usando RC2 | RC2 |
-| POST | `/encriptar/desencripta-TripleDES` | Desencripta texto usando Triple DES | 3DES |
+| POST | `/desencriptar/desencriptar-AES` | Desencripta texto usando AES | AES |
+| POST | `/desencriptar/desencripta-RC2` | Desencripta texto usando RC2 | RC2 |
+| POST | `/desencriptar/desencripta-TripleDES` | Desencripta texto usando Triple DES | 3DES |
 
 #### Request Body (Desencriptação)
 ```json
@@ -145,7 +151,7 @@ A API está organizada sob a rota base `/encriptar` e oferece os seguintes endpoi
 }
 ```
 
-### ?? Códigos de Status
+### Códigos de Status
 
 | Código | Descrição |
 |--------|-----------|
@@ -153,7 +159,7 @@ A API está organizada sob a rota base `/encriptar` e oferece os seguintes endpoi
 | 400 | Dados de entrada inválidos (ArgumentException) |
 | 500 | Erro interno no processamento (InvalidOperationException) |
 
-## ?? Instalação e Execução
+## Instalação e Execução
 
 ### Pré-requisitos
 
@@ -182,7 +188,7 @@ dotnet run
 https://localhost:{porta}/swagger
 ```
 
-## ?? Algoritmos Suportados
+## Algoritmos Suportados
 
 ### Implementados
 - **AES (Advanced Encryption Standard)**: Algoritmo de criptografia simétrica amplamente utilizado
@@ -194,22 +200,22 @@ https://localhost:{porta}/swagger
 - **RC4**: Cifra de fluxo
 - **RSA**: Criptografia assimétrica
 
-## ?? Funcionalidades Futuras
+## Funcionalidades Futuras
 
 Baseado na interface `IEncryptService`, os seguintes endpoints estão planejados:
 
-- ? AES - Implementado
-- ? Triple DES - Implementado
-- ? RC2 - Implementado
-- ? AES-GCM - Em desenvolvimento
-- ? RC4 - Planejado
-- ? RSA - Planejado
+- [x] AES - Implementado
+- [x] Triple DES - Implementado
+- [x] RC2 - Implementado
+- [ ] AES-GCM - Em desenvolvimento
+- [ ] RC4 - Planejado
+- [ ] RSA - Planejado
 
-## ?? Dependências
+## Dependências
 
 - **Swashbuckle.AspNetCore (9.0.6)**: Geração de documentação Swagger/OpenAPI
 
-## ??? Configuração de Injeção de Dependências
+## Configuração de Injeção de Dependências
 
 O projeto utiliza injeção de dependências nativa do ASP.NET Core:
 
@@ -222,7 +228,7 @@ builder.Services.AddTransient<AesGcmServices>();
 builder.Services.AddTransient<RC2Services>();
 ```
 
-## ?? Deploy e CI/CD
+## Deploy e CI/CD
 
 O projeto está configurado com um pipeline de CI/CD que realiza deploy automático no Azure:
 
@@ -231,11 +237,11 @@ O projeto está configurado com um pipeline de CI/CD que realiza deploy automátic
 - **Deploy**: Automático a cada push na branch principal
 - **Monitoramento**: Disponível através do portal Azure
 
-## ?? Licença
+## Licença
 
 Este projeto está em desenvolvimento ativo.
 
-## ?? Autor
+## Autor
 
 **Vinícius Gabriel**
 
@@ -243,4 +249,4 @@ Este projeto está em desenvolvimento ativo.
 
 ---
 
-? Desenvolvido com .NET 9.0 | ?? Hospedado no Azure
+Desenvolvido com .NET 9.0 | Hospedado no Azure
