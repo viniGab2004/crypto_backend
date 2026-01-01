@@ -17,6 +17,7 @@ builder.Services.AddTransient<AESService>();
 builder.Services.AddTransient<DESService>();
 builder.Services.AddTransient<AesGcmServices>();
 builder.Services.AddTransient<RC2Services>();
+builder.Services.AddTransient<RC4Services>();
 
 var app = builder.Build();
 

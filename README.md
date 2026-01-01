@@ -20,7 +20,7 @@ A API está disponível online no Azure:
 
 ## Tecnologias
 
-- **.NET 9.0**
+- **.NET 10.0**
 - **ASP.NET Core Web API**
 - **Swagger/OpenAPI** - Documentação interativa da API
 - **C# 13.0**
@@ -44,6 +44,7 @@ crypto/
 │   ├── AESService.cs
 │   ├── DESService.cs
 │   ├── RC2Services.cs
+│   ├── RC4Services.cs
 │   └── AesGcmServices.cs
 ├── Handler/        # Validações e tratamento de dados
 │   └── EncryptHandler.cs
@@ -128,6 +129,7 @@ Rota base: `/encriptar`
 |--------|----------|-----------|-----------|--------|
 | POST | `/encriptar/encripta-AES` | Encripta texto usando AES | AES | Implementado |
 | POST | `/encriptar/encripta-RC2` | Encripta texto usando RC2 | RC2 | Implementado |
+| POST | `/encriptar/encripta-RC4` | Encripta texto usando RC4 | RC4 | Em desenvolvimento |
 | POST | `/encriptar/encripta-TripleDES` | Encripta texto usando Triple DES | 3DES | Implementado |
 | POST | `/encriptar/encripta-AesGcm` | Encripta texto usando AES-GCM | AES-GCM | Implementado |
 
@@ -200,7 +202,7 @@ Rota base: `/desencripar`
 
 ### Pré-requisitos
 
-- [.NET 9.0 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
+- [.NET 10.0 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
 
 ### Passos para Execução Local
 
@@ -239,10 +241,11 @@ https://localhost:{porta}/swagger
   - Desencriptação: Implementado
 - **AES-GCM (Galois/Counter Mode)**: Modo de operação do AES que fornece autenticação
   - Encriptação: Implementado
-  - Desencriptação: Em desenvolvimento
+- **RC4**: Cifra de fluxo
+  - Encriptação: Em desenvolvimento
+  - Desencriptação: Planejado
 
 ### Planejados
-- **RC4**: Cifra de fluxo
 - **RSA**: Criptografia assimétrica
 
 ## Funcionalidades por Algoritmo
@@ -253,7 +256,7 @@ https://localhost:{porta}/swagger
 | Triple DES | Implementado | Implementado |
 | RC2 | Implementado | Implementado |
 | AES-GCM | Implementado | Em desenvolvimento |
-| RC4 | Planejado | Planejado |
+| RC4 | Em desenvolvimento | Planejado |
 | RSA | Planejado | Planejado |
 
 ## Dependências
@@ -277,6 +280,7 @@ builder.Services.AddTransient<AESService>();
 builder.Services.AddTransient<DESService>();
 builder.Services.AddTransient<AesGcmServices>();
 builder.Services.AddTransient<RC2Services>();
+builder.Services.AddTransient<RC4Services>();
 ```
 
 ### Ciclos de Vida
@@ -304,4 +308,4 @@ Este projeto está em desenvolvimento ativo.
 
 ---
 
-Desenvolvido com .NET 9.0 | Hospedado no Azure
+Desenvolvido com .NET 10.0 | Hospedado no Azure

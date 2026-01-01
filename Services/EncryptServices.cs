@@ -11,15 +11,17 @@ namespace crypto.Services
         private DESService _trpleDESService;
         private AesGcmServices _aesGcmService;
         private RC2Services _rc2Service;
+        private RC4Services _rc4Service;
         private EncryptHandler _encryptHandler;
 
-        public EncryptServices(AESService serviceAES, EncryptHandler encryptHandler, DESService DESService, AesGcmServices aesGcmServices, RC2Services rc2Services) 
+        public EncryptServices(AESService serviceAES, EncryptHandler encryptHandler, DESService DESService, AesGcmServices aesGcmServices, RC2Services rc2Services, RC4Services rc4Services) 
         {
             _serviceAES = serviceAES;
             _trpleDESService = DESService;
             _aesGcmService = aesGcmServices;
             _encryptHandler = encryptHandler;
             _rc2Service = rc2Services;
+            _rc4Service = rc4Services;
         }
 
         public async Task<StringEncriptada> EncriptarAES(string texto)
@@ -42,7 +44,8 @@ namespace crypto.Services
 
         public Task<StringEncriptada> EncriptarRC4(string texto)
         {
-            throw new NotImplementedException();
+            _encryptHandler.possuiTextoDesencriptado(texto);
+            return _rc4Service.Encriptar(texto);
         }
 
         public Task<StringEncriptada> EncriptarRSA(string texto)
