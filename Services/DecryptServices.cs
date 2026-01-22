@@ -32,7 +32,9 @@ namespace crypto.Services
 
         public StringEncriptada DesencriptarAesGcm(StringEncriptada stringEncriptada)
         {
-            throw new NotImplementedException();
+            _encryptHandler.possuiTextoEncriptado(stringEncriptada.textoEncriptado);
+            _encryptHandler.possuiChaveDeCriptografia(stringEncriptada.chaveDeCriptografia);
+            return _aesGcmService.Desencriptar(stringEncriptada);
         }
 
         public async Task<StringEncriptada> DesencriptarRC2(StringEncriptada stringEncriptada)
